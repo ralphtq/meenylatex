@@ -1,4 +1,4 @@
-elm make --debug Main.elm --output=main.js
+elm make --debug src/Main.elm --output=main.js
 
 #case $1 in
 #

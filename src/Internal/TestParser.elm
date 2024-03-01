@@ -1,35 +1,40 @@
 module Internal.TestParser exposing (bracketIntBlock, intBlock, intItem)
 
-import Internal.ParserHelpers exposing (..)
-import Parser exposing (..)
+-- import Internal.ParserHelpers exposing (..)
+import Parser.Advanced exposing (..)
+import Internal.Parser exposing (..)
+import Parser exposing (Problem(..))
+-- import Parser exposing (..)
 
+type Problem =
+    ExpectingInt
 
-intItem : Parser Int
+intItem : LXParser Int
 intItem =
     succeed identity
-        |= Parser.int
+        |= int
         |. ws
 
 
-intBlock : Parser (List Int)
+intBlock : LXParser (List Int)
 intBlock =
-    Parser.sequence
-        { start = ""
-        , separator = ","
-        , end = ""
+    sequence
+        { start = Token "" ExpectingInt
+        , separator = Token ","
+        , end = Token "" ExpectingInt
         , spaces = ws
-        , item = Parser.int
+        , item = int
         , trailing = Forbidden -- no trailing commma
         }
 
 
-bracketIntBlock : Parser (List Int)
+bracketIntBlock : LXParser (List Int)
 bracketIntBlock =
-    Parser.sequence
-        { start = "["
+    sequence
+        { start = Token "[" ExpectingInt
         , separator = ","
         , end = "]"
         , spaces = ws
-        , item = Parser.int
+        , item = int
         , trailing = Forbidden -- no trailing commma
         }
