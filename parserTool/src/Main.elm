@@ -99,32 +99,40 @@ avogadroConstant2 =
 \\end{Avogadro's Constant Definition}
 """
 
+-- https://qudt.org/vocab/constant/BohrMagneton
 
 bohrMagneton =
     """
-\\begin{BohrMagnetron Definition}
+\\begin{BohrMagneton Definition}
 \\(\\mu_B = \\frac{e\\hbar}{2m_e}\\), 
 where \\emph{e} is the elementary charge, \\(\\hbar\\) is the Planck constant, 
 and \\emph{m_e} is the rest mass of electron.
-\\end{BohrMagnetron Definition}
+\\end{BohrMagneton Definition}
 """
+-- https://qudt.org/vocab/constant/FineStructureConstant
 
+fineStructureConstant = """
+\\begin{Fine Structure Constant Definition}
+\\(a = \\frac{e^2}{4\\pi\\varepsilon_0\\hbar c_0}\\), where \\(e\\) is the elementary charge, \\(\\varepsilon_0\\) is the electric constant, item \\(\\hbar\\) is the reduced Planck constant, and \\(c_0\\) is the speed of light in vacuum.
+\\end{Fine Structure Constant Definition}
+"""
 
 stringsToRender =
     [ "% This is a comment\n"
-    , ampere4
-    , ctCountablyInfinite
-    , quantityType
-    , coherentUnitOfSystem
-    , avogadroConstant2
-    , bohrMagneton
-    , equation1
-    , equation2
-    , theorem1
-    , tabular1
-    , listExample1
-    -- , xLink1
-    , ellie1
+    -- , ampere4
+    -- , ctCountablyInfinite
+    -- , quantityType
+    -- , coherentUnitOfSystem
+    -- , avogadroConstant2
+    -- , BohrMagneton
+    -- , fineStructureConstant
+    -- , equation1
+    -- , equation2
+    -- , theorem1
+    -- , tabular1
+    -- , listExample1
+    , xLink1
+    -- , ellie1
     ]
 
 
@@ -139,6 +147,50 @@ main =
             |> List.map (\r -> Html.p [] [testRenderingOf r]))
         ]
 
+testRenderingOf : String -> Html msg
+testRenderingOf str =
+    let
+        renderOutput =
+            renderString2 str
+    in
+    Html.div []
+        [ renderOutput
+        ]
+
+
+
+-- renderString2 : Internal.Render.SourceText -> Html msg
+renderString2 str =
+    renderString Internal.LatexState.emptyLatexState str
+
+
+type alias Model =
+    ()
+
+
+type Msg
+    = NoOp
+
+
+type alias Flags =
+    ()
+
+
+init : Flags -> ( Model, Cmd Msg )
+init _ =
+    ( (), Cmd.none )
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model =
+    case msg of
+        NoOp ->
+            ( model, Cmd.none )
+
+
+subscriptions : Model -> Sub Msg
+subscriptions _ =
+    Sub.none
 
 equation1 =
     """
@@ -194,53 +246,6 @@ listExample1 =
 
 
 -- bozo = "\\bozo{1}{2}"
--- xLink1 =
---     "\\xlinkPublic{378}{Infinity}"
+xLink1 =
+    "\\xlinkPublic{378}{Infinity}"
 
-
-testRenderingOf : String -> Html msg
-testRenderingOf str =
-    let
-        renderOutput =
-            renderString2 str
-    in
-    Html.div []
-        [ renderOutput
-        ]
-
-
-
--- renderString2 : Internal.Render.SourceText -> Html msg
-
-
-renderString2 str =
-    renderString Internal.LatexState.emptyLatexState str
-
-
-type alias Model =
-    ()
-
-
-type Msg
-    = NoOp
-
-
-type alias Flags =
-    ()
-
-
-init : Flags -> ( Model, Cmd Msg )
-init _ =
-    ( (), Cmd.none )
-
-
-update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
-    case msg of
-        NoOp ->
-            ( model, Cmd.none )
-
-
-subscriptions : Model -> Sub Msg
-subscriptions _ =
-    Sub.none
