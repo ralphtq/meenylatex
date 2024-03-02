@@ -214,7 +214,6 @@ renderString latexState source =
     in
     paragraphs
         |> List.map parse
-        |> Debug.log "parse"
         |> List.map render_
         |> Html.div []
 
