@@ -57,12 +57,6 @@ or \\( | \\text{X} |  >  | \\mathbb N | \\),
 is said to be a countably infinite set.
 """
 
-
-
--- \\italic{Quantity Type} is an enumeration of quanity kinds.
--- It specializes \\(\\boxed{\\text{dtype:EnumeratedValue}}\\) by constraining \\boxed{dtype:value} to instances of \\boxed{qudt:QuantityKind}.
-
-
 quantityType =
     """
 \\italic{Quantity Type} is an enumeration of quanity kinds. 
@@ -99,7 +93,6 @@ avogadroConstant2 =
 \\end{Avogadro's Constant Definition}
 """
 
--- https://qudt.org/vocab/constant/BohrMagneton
 
 bohrMagneton =
     """
@@ -107,31 +100,39 @@ bohrMagneton =
 \\(\\mu_B = \\frac{e\\hbar}{2m_e}\\), 
 where \\emph{e} is the elementary charge, \\(\\hbar\\) is the Planck constant, 
 and \\emph{m_e} is the rest mass of electron.
+\\par
+Compare with: \\href{https://qudt.org/vocab/constant/BohrMagneton}{QUDT Linked Data}
 \\end{BohrMagneton Definition}
 """
--- https://qudt.org/vocab/constant/FineStructureConstant
 
-fineStructureConstant = """
+
+fineStructureConstant =
+    """
 \\begin{Fine Structure Constant Definition}
 \\(a = \\frac{e^2}{4\\pi\\varepsilon_0\\hbar c_0}\\), where \\(e\\) is the elementary charge, \\(\\varepsilon_0\\) is the electric constant, item \\(\\hbar\\) is the reduced Planck constant, and \\(c_0\\) is the speed of light in vacuum.
+\\par
+Compare with: \\href{https://qudt.org/vocab/constant/FineStructureConstant}{QUDT Linked Data}
 \\end{Fine Structure Constant Definition}
 """
 
+
 stringsToRender =
     [ "% This is a comment\n"
+
     -- , ampere4
     -- , ctCountablyInfinite
     -- , quantityType
     -- , coherentUnitOfSystem
     -- , avogadroConstant2
-    -- , BohrMagneton
+    , bohrMagneton
+
     -- , fineStructureConstant
     -- , equation1
     -- , equation2
     -- , theorem1
     -- , tabular1
     -- , listExample1
-    , xLink1
+    -- , xLink1
     -- , ellie1
     ]
 
@@ -140,28 +141,20 @@ main : Html msg
 main =
     Html.div []
         [ Html.h2 []
-            [ Html.text "Test LaTeX" ]
+            [ Html.text "LaTeX Rendering Tests" ]
         , Html.div
             []
             (stringsToRender
-            |> List.map (\r -> Html.p [] [testRenderingOf r]))
+                |> List.map (\r -> Html.p [] [ testRenderingOf r ])
+            )
         ]
+
 
 testRenderingOf : String -> Html msg
 testRenderingOf str =
-    let
-        renderOutput =
-            renderString2 str
-    in
     Html.div []
-        [ renderOutput
+        [ renderString Internal.LatexState.emptyLatexState str
         ]
-
-
-
--- renderString2 : Internal.Render.SourceText -> Html msg
-renderString2 str =
-    renderString Internal.LatexState.emptyLatexState str
 
 
 type alias Model =
@@ -191,6 +184,7 @@ update msg model =
 subscriptions : Model -> Sub Msg
 subscriptions _ =
     Sub.none
+
 
 equation1 =
     """
@@ -246,6 +240,7 @@ listExample1 =
 
 
 -- bozo = "\\bozo{1}{2}"
+
+
 xLink1 =
     "\\xlinkPublic{378}{Infinity}"
-
